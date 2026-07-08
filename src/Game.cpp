@@ -20,7 +20,29 @@ void Game::newGame() {
               << " starts with " << wordToFind[0] << std::endl;
 }
 
+
+
+void Game::playLoop(){
+
+    std::string userInput;
+    
+    do{
+
+        newGame();
+        play();
+
+        std::cout << "Press 1 to play again and continue, any other key to stop: ";
+
+        std::cin >> userInput;
+
+        std::cout << "\n";
+        
+    }while(userInput == "1");
+
+}
+
 void Game::play() {
+
     while (numberOfErrors < maxErrors && !isWordFound()) {
         std::cout << "\nEnter a letter: ";
 
@@ -39,11 +61,13 @@ void Game::play() {
     }
 
     if (isWordFound()) {
-        std::cout << "\nCongratulations! You win!" << std::endl;
+        std::cout << "\nCongratulations! You win!\n" << std::endl;
     } else {
         std::cout << "\nOh no! The hangman is complete." << std::endl;
-        std::cout << "The city was: " << wordToFind << std::endl;
+        std::cout << "The city was: " << wordToFind << "\n" <<  std::endl;
     }
+
+
 }
 
 void Game::processGuess(const std::string& userInput) {

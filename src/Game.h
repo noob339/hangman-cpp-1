@@ -12,8 +12,10 @@ public:
 
     void newGame();
     void play();
+    void playLoop();
 
 private:
+
     static const int maxErrors = 6;
 
     Dictionary dictionary;

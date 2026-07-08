@@ -13,8 +13,7 @@ int main() {
     std::cout << "\nLet's guess a Washington State city!" << std::endl;
 
     Game game;
-    game.newGame();
-    game.play();
+    game.playLoop();
 
     return 0;
 }
