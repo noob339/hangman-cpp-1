@@ -48,3 +48,13 @@ Run the program:
 ```bash
 ./hangman
 ```
+---
+
+
+# Notes
+Please do not commit compiled code (e.g. .o files or executables) to the repo! You should only commit .cpp and .h files.
+
+# Communication
+The Slack channel for this project is _#hangman-cpp-1_
+
+Please use that channel for communicating with other contributors.
