@@ -88,12 +88,22 @@ void Game::processGuess(const std::string& userInput) {
 
     guessedLetters.push_back(userInput);
 
-    if (wordToFind.find(userInput) != std::string::npos) {
-        size_t index = wordToFind.find(userInput);
+    std::string str {};
+
+    if (userInput[0] >= 65 && userInput[0] <= 90){
+        
+        char lowerCase = tolower(userInput[0]);
+        str = std::string{lowerCase};
+        guessedLetters.push_back(str);
+    }
+
+
+    if (wordToFind.find(tolower(userInput[0])) != std::string::npos) {
+        size_t index = wordToFind.find(tolower(userInput[0]));
 
         while (index != std::string::npos) {
-            wordFound[index] = userInput[0];
-            index = wordToFind.find(userInput, index + 1);
+            wordFound[index] = tolower(userInput[0]);
+            index = wordToFind.find(tolower(userInput[0]), index + 1);
         }
     } else {
         numberOfErrors++;
