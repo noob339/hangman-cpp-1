@@ -146,21 +146,13 @@ void Game::processGuess(const std::string& userInput) {
 
 void Game::processGuessWord(std::string userInput){
     bool result = wordToFind == userInput;
-   
 
     if (result == false){
         numberOfErrors++;
     } else {
-
-        //the issue is here, 
-
         wordFound.clear();
         wordFound.insert(wordFound.begin(), userInput.begin(), userInput.end());
-         
     }
-
-    std::cout << "userinput is:       " << userInput << '\n';
-    std::cout << "word to find is:    " << wordToFind << '\n';
 }
 
 bool Game::isWordFound() const {
