@@ -71,16 +71,19 @@ void Game::play() {
     numOfGames++;
 
     while (numberOfErrors < maxErrors && !isWordFound()) {
-        std::cout << "\nEnter a letter: ";
+        std::cout << "\nEnter a letter or a city name: ";
 
-        std::string userInput;
-        std::cin >> userInput;
+        std::string userInput {};
+        std::getline(std::cin >> std::ws, userInput);
 
         if (userInput.length() > 1) {
+            processGuessWord(userInput);
+            std::cout << "are we even entering here\n";
+            
+        } else{
             userInput = userInput.substr(0, 1);
+            processGuess(userInput);
         }
-
-        processGuess(userInput);
 
         std::cout << Drawing::getDrawing(numberOfErrors) << std::endl;
         std::cout << wordFoundContent() << std::endl;
@@ -139,6 +142,25 @@ void Game::processGuess(const std::string& userInput) {
     } else{
         numberOfErrors++;
     }
+}
+
+void Game::processGuessWord(std::string userInput){
+    bool result = wordToFind == userInput;
+   
+
+    if (result == false){
+        numberOfErrors++;
+    } else {
+
+        //the issue is here, 
+
+        wordFound.clear();
+        wordFound.insert(wordFound.begin(), userInput.begin(), userInput.end());
+         
+    }
+
+    std::cout << "userinput is:       " << userInput << '\n';
+    std::cout << "word to find is:    " << wordToFind << '\n';
 }
 
 bool Game::isWordFound() const {
