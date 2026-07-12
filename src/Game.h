@@ -32,6 +32,7 @@ private:
     void processGuess(const std::string& userInput);
     bool isWordFound() const;
     std::string wordFoundContent() const;
+    int findLetters(char userInput);
 };
 
 #endif

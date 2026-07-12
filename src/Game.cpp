@@ -13,15 +13,35 @@ Game::Game() {
 
 void Game::newGame() {
     numberOfErrors = 0;
- 
+
+    std::cout << "Choose a city set: \n";
+    std::cout << "1: for Washington State Cities\n";
+    std::cout << "2: New York State Cities\n\noption: ";
+
+    int option;
+    std::cin >> option;
+
+    if (option == 1){
+        std::cout << "\nLet's guess a Washington State city!" << std::endl;
+    } else {
+        std::cout << "\nLet's guess a New York State city!" << std::endl;
+    }    
 
     guessedLetters.clear();
 
-    wordToFind = dictionary.getRandomWord();
-    wordFound = std::vector<char>(wordToFind.length(), '_');
-    wordFound[0] = wordToFind[0];
+    wordToFind = dictionary.getRandomWord(option); 
 
-    std::cout << "\nHint: the " << dictionary.getCategory()
+    wordFound = std::vector<char>(wordToFind.length(), '_'); 
+
+    size_t index = wordToFind.find(" ");
+
+    if(index != std::string::npos){
+        wordFound[index] = ' ';
+    }
+
+    wordFound[0] = wordToFind[0]; 
+
+    std::cout << "\nHint: the " << dictionary.getCategory(option)
               << " starts with " << wordToFind[0] << std::endl;
 }
 
@@ -30,7 +50,6 @@ void Game::playLoop(){
     std::string userInput;
     
     do{
-
         newGame();
         play();
 
@@ -42,7 +61,8 @@ void Game::playLoop(){
 
         std::cout << "\n";
         
-    }while(userInput == "1");
+    }
+    while(userInput == "1");
 
 }
 
@@ -79,14 +99,29 @@ void Game::play() {
 
 }
 
+int Game::findLetters(char userInput){
+
+    if (wordToFind.find(userInput) != std::string::npos) { 
+        size_t index = wordToFind.find(userInput); 
+
+        while (index != std::string::npos) {
+            wordFound[index] = userInput;
+            index = wordToFind.find(userInput, index + 1); 
+        }
+        return 1;
+    }
+
+   guessedLetters.push_back(std::string(1, userInput));
+   return 0;
+}
+
 void Game::processGuess(const std::string& userInput) {
+
     if (std::find(guessedLetters.begin(), guessedLetters.end(), userInput) != guessedLetters.end()) {
         std::cout << "You already guessed '" << userInput
                   << "'. Try another letter." << std::endl;
         return;
     }
-
-    guessedLetters.push_back(userInput);
 
     std::string str {};
 
@@ -94,18 +129,14 @@ void Game::processGuess(const std::string& userInput) {
         
         char lowerCase = tolower(userInput[0]);
         str = std::string{lowerCase};
-        guessedLetters.push_back(str);
+    } else {
+        char upperCase = toupper(userInput[0]);
+        str = std::string{upperCase};
     }
 
-
-    if (wordToFind.find(tolower(userInput[0])) != std::string::npos) {
-        size_t index = wordToFind.find(tolower(userInput[0]));
-
-        while (index != std::string::npos) {
-            wordFound[index] = tolower(userInput[0]);
-            index = wordToFind.find(tolower(userInput[0]), index + 1);
-        }
-    } else {
+    if (findLetters(userInput[0]) == 1){
+        findLetters(str[0]);
+    } else{
         numberOfErrors++;
     }
 }
@@ -127,8 +158,6 @@ std::string Game::wordFoundContent() const {
 
     return content;
 }
-
-
 
 void Game::scoreboard(){
 
