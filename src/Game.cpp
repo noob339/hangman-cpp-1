@@ -14,22 +14,30 @@ Game::Game() {
 void Game::newGame() {
     numberOfErrors = 0;
 
-    std::cout << "Choose a city set: \n";
-    std::cout << "1: for Washington State Cities\n";
-    std::cout << "2: New York State Cities\n\noption: ";
+    char option;
 
-    int option;
-    std::cin >> option;
+    do{
+      
+        std::cout << "Choose a city set: \n";
+        std::cout << "1: for Washington State Cities\n";
+        std::cout << "2: New York State Cities\n\noption: ";
 
-    if (option == 1){
+        std::cin >> option;
+
+        std::cin.ignore(10000, '\n');
+
+    } while (option != '1' && option != '2');
+
+
+    if (option == '1'){
         std::cout << "\nLet's guess a Washington State city!" << std::endl;
-    } else {
+    } else if(option == '2'){
         std::cout << "\nLet's guess a New York State city!" << std::endl;
-    }    
+    } 
 
     guessedLetters.clear();
 
-    wordToFind = dictionary.getRandomWord(option); 
+    wordToFind = dictionary.getRandomWord(std::stoi(std::string{option})); 
 
     wordFound = std::vector<char>(wordToFind.length(), '_'); 
 
@@ -45,25 +53,32 @@ void Game::newGame() {
               << " starts with " << wordToFind[0] << std::endl;
 }
 
+//if you enter a random letter when deciding which state to play with, it will enter a never ending loop
+
+
 void Game::playLoop(){
 
     std::string userInput;
+    char lowerCase;
     
-    do{
+    do {
         newGame();
         play();
 
         scoreboard();
-
-        std::cout << "Press 1 to play again and continue, any other key to stop: ";
-
-        std::cin >> userInput;
-
-        std::cout << "\n";
         
-    }
-    while(userInput == "1");
 
+        do {
+            std::cout << "Play again? (y/n): ";
+            std::cin >> userInput;
+
+            lowerCase = std::tolower(static_cast<unsigned char>(userInput[0]));
+
+            std::cout << "\n";
+
+        } while(lowerCase != 'n' && lowerCase != 'y');
+        
+    } while(lowerCase == 'y');
 }
 
 void Game::play() {
@@ -78,8 +93,6 @@ void Game::play() {
 
         if (userInput.length() > 1) {
             processGuessWord(userInput);
-            std::cout << "are we even entering here\n";
-            
         } else{
             userInput = userInput.substr(0, 1);
             processGuess(userInput);
@@ -98,8 +111,6 @@ void Game::play() {
         std::cout << "The city was: " << wordToFind << "\n" <<  std::endl;
         losses++;
     }
-
-
 }
 
 int Game::findLetters(char userInput){
